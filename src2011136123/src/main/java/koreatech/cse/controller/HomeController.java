@@ -1,11 +1,18 @@
 package koreatech.cse.controller;
 
+import koreatech.cse.service.Culture;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+import java.io.IOException;
 import java.util.Map;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 @Controller
 @RequestMapping("/")
@@ -31,8 +38,40 @@ public class HomeController {
         return "hello";
     }
     @RequestMapping("/searchValue")
-    public void searchValueControll( @RequestParam("month") int month,  @RequestParam("day") int day){
-        System.out.println("하하하");
+    public void searchValueControll( @RequestParam("month") int month,  @RequestParam("day") int day) throws IOException{
+
+        //Culture culture = new Culture();
+        //culture.cultureDataParsing();
+        getCultureDataBaseInsert();
+
+    }
+
+    private static void getCultureDataBaseInsert() {
+        System.out.println("Testing GET METHOD (1)----------");
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            String culture= restTemplate.getForObject("http://openAPI.seoul.go.kr:8088/43794c63576a696e38334255747573/json/SearchConcertPeriodService/1/10/", String.class);
+
+            try{
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject1 = (JSONObject) jsonParser.parse(culture);
+                JSONObject jsonObject2 = (JSONObject) jsonObject1.get("SearchConcertPeriodService");
+                JSONArray array = (JSONArray) jsonObject2.get("row");
+
+                for( int i = 0 ; i < array.size() ; i++ ){
+
+                    JSONObject entitiy = (JSONObject)array.get(i);
+                    String cultureInfo = (String)entitiy.get("TITLE");
+                    System.out.println(cultureInfo);
+                }
+
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
+
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.getStatusCode() + ": " + e.getStatusText());
+        }
     }
 
 
