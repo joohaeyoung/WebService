@@ -1,5 +1,8 @@
 package koreatech.cse.controller;
 
+import koreatech.cse.domain.Concert;
+import koreatech.cse.repository.BookMapper;
+import koreatech.cse.repository.ConcertPeriodServiceMapper;
 import koreatech.cse.service.Culture;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,14 +12,22 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import javax.inject.Inject;
+
 @Controller
 @RequestMapping("/")
 public class HomeController {
+
+    @Inject
+    private ConcertPeriodServiceMapper concertPeriodServiceMapper;
+
+    Concert concert;
 
     @Value("${env.text}")
     private String env;
@@ -38,15 +49,16 @@ public class HomeController {
         return "hello";
     }
     @RequestMapping("/searchValue")
-    public void searchValueControll( @RequestParam("month") int month,  @RequestParam("day") int day) throws IOException{
+    public String searchValueControll(Model model, @RequestParam("month") int month,  @RequestParam("day") int day) throws IOException{
 
-        //Culture culture = new Culture();
-        //culture.cultureDataParsing();
+        concert = Concert.getInstance();
+
         getCultureDataBaseInsert();
-
+        model.addAttribute("concert",concertPeriodServiceMapper.concertList());
+        return "concertList";
     }
 
-    private static void getCultureDataBaseInsert() {
+    private void getCultureDataBaseInsert() {
         System.out.println("Testing GET METHOD (1)----------");
         RestTemplate restTemplate = new RestTemplate();
         try {
@@ -61,19 +73,21 @@ public class HomeController {
                 for( int i = 0 ; i < array.size() ; i++ ){
 
                     JSONObject entitiy = (JSONObject)array.get(i);
-                    String cultureInfo = (String)entitiy.get("TITLE");
-                    System.out.println(cultureInfo);
+                    concert.setTitle((String)entitiy.get("TITLE"))
+                           .setStartdate((String)entitiy.get("STRTDATE"))
+                           .setEnddate((String)entitiy.get("END_DATE"))
+                           .setPlace((String)entitiy.get("PLACE"));
+
+                    concertPeriodServiceMapper.insert(concert);
                 }
 
             }catch (ParseException e){
                 e.printStackTrace();
             }
-
         } catch (HttpClientErrorException e) {
             System.out.println(e.getStatusCode() + ": " + e.getStatusText());
         }
     }
-
 
     @RequestMapping("/requestParamTest")
     public String requestParamTest(@RequestParam(name = "a", required=false, defaultValue = "0") int a,
