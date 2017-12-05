@@ -29,32 +29,21 @@ public class HomeController {
 
     Concert concert;
 
-    @Value("${env.text}")
-    private String env;
-
-    @ModelAttribute("name")
-    private String getName() {
-        return "IamHomeControllerModelAttribute";
-    }
-
     @RequestMapping
     public String home(Model model) {
-        model.addAttribute("textFromController", "World");
         return "hello";
     }
 
-    @RequestMapping("/env")
-    public String env(Model model) {
-        model.addAttribute("textFromController", env);
-        return "hello";
-    }
     @RequestMapping("/searchValue")
-    public String searchValueControll(Model model, @RequestParam("month") int month,  @RequestParam("day") int day) throws IOException{
+    public String searchValueControll(Model model, @RequestParam("month") String month,  @RequestParam("day") String day) throws IOException{
 
+        String monthAndDay = "2017"+"-"+month+"-"+day;
+        System.out.println(monthAndDay);
         concert = Concert.getInstance();
 
+        concertPeriodServiceMapper.delete();
         getCultureDataBaseInsert();
-        model.addAttribute("concert",concertPeriodServiceMapper.concertList());
+        model.addAttribute("concert",concertPeriodServiceMapper.concertList2(monthAndDay));
         return "concertList";
     }
 
@@ -62,7 +51,7 @@ public class HomeController {
         System.out.println("Testing GET METHOD (1)----------");
         RestTemplate restTemplate = new RestTemplate();
         try {
-            String culture= restTemplate.getForObject("http://openAPI.seoul.go.kr:8088/43794c63576a696e38334255747573/json/SearchConcertPeriodService/1/10/", String.class);
+            String culture= restTemplate.getForObject("http://openAPI.seoul.go.kr:8088/43794c63576a696e38334255747573/json/SearchConcertPeriodService/1/200/", String.class);
 
             try{
                 JSONParser jsonParser = new JSONParser();
@@ -80,7 +69,6 @@ public class HomeController {
 
                     concertPeriodServiceMapper.insert(concert);
                 }
-
             }catch (ParseException e){
                 e.printStackTrace();
             }
