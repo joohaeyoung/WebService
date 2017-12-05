@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.json.simple.JSONArray;
@@ -76,7 +77,45 @@ public class HomeController {
             System.out.println(e.getStatusCode() + ": " + e.getStatusText());
         }
     }
+    
+    private void getWeatherData() {
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            String weather = restTemplate.getForObject("http://api.wunderground.com/api/1a0597f9ceaf824a/forecast/lang:KR/q/KR/Seoul.json", String.class);
+            JSONParser jsonParser = new JSONParser();
+            Object object;
 
+            try{
+                object = jsonParser.parse(weather);
+                JSONObject jsonObject = (JSONObject) object;
+
+                JSONObject forecast = (JSONObject) jsonObject.get("forecast");
+                JSONObject txt_forecast = (JSONObject) forecast.get("txt_forecast");
+                JSONArray forecastday = (JSONArray) txt_forecast.get("forecastday");
+                //System.out.println("\tForecastday: " + forecastday);
+
+                // take the elements of the json array
+                //for(int i=0; i<forecastday.size(); i++){
+                //    System.out.println("The " + i + " element of the array: "+forecastday.get(i));
+                //}
+                Iterator i = forecastday.iterator();
+
+                while (i.hasNext()) {
+                    JSONObject innerObj = (JSONObject) i.next();
+                    System.out.println("Period : "+ innerObj.get("period") +
+                            ", 예보일 : " + innerObj.get("title") +
+                            ", 날씨 예보 : " + innerObj.get("fcttext_metric") +
+                            ", 날씨 아이콘 URL : " + innerObj.get("icon_url" ));
+                }
+
+
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.getStatusCode() + ": " + e.getStatusText());
+        }
+    }
     @RequestMapping("/requestParamTest")
     public String requestParamTest(@RequestParam(name = "a", required=false, defaultValue = "0") int a,
                                    @RequestParam("b") String b,
