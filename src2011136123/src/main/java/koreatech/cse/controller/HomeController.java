@@ -78,6 +78,49 @@ public class HomeController {
         }
     }
     
+    @RequestMapping("/searchValue")
+    public String showResult(Model model) throws IOException{
+
+        foodd = Food.getInstance();
+
+        getFoodDataBaseInsert();
+        model.addAttribute("food",priceModelStoreServiceMapper.foodList());
+        return "foodList";
+    }
+
+    public void getFoodDataBaseInsert() {
+        System.out.println("Testing GET METHOD (1)----------");
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            String food= restTemplate.getForObject("http://openapi.seoul.go.kr:8088/sample/xml/ListPriceModelStoreService/1/5/", String.class);
+
+            try{
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject1 = (JSONObject) jsonParser.parse(food);
+                JSONObject jsonObject2 = (JSONObject) jsonObject1.get("ListPriceModelStoreService");
+                JSONArray array = (JSONArray) jsonObject2.get("row");
+
+                for( int i = 0 ; i < array.size() ; i++ ){
+
+                    JSONObject entitiy = (JSONObject)array.get(i);
+                    foodd.setName((String)entitiy.get("SH_NAME"))
+                            .setInfo((String)entitiy.get("SH_INFO"))
+                            .setPride((String)entitiy.get("SH_PRIDE"))
+                            .setAddr((String)entitiy.get("SH_ADDR"));
+
+                    PriceModelStoreServiceMapper.insert(foodd);
+                }
+
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.getStatusCode() + ": " + e.getStatusText());
+        }
+    }
+
+    
+    
     private void getWeatherData() {
         RestTemplate restTemplate = new RestTemplate();
         try {
