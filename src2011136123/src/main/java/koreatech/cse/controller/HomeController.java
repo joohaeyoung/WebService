@@ -17,7 +17,12 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.io.BufferedReader;
+import java.io.IOException;
 import javax.inject.Inject;
 
 @Controller
@@ -38,6 +43,8 @@ public class HomeController {
     public String searchValueControll(Model model, @RequestParam("month") String month,  @RequestParam("day") String day) throws IOException{
 
         String monthAndDay = "2017"+"-"+month+"-"+day;
+
+
         System.out.println(monthAndDay);
         concert = Concert.getInstance();
 
@@ -46,6 +53,7 @@ public class HomeController {
         model.addAttribute("concert",concertPeriodServiceMapper.concertList2(monthAndDay));
         return "concertList";
     }
+
 
     private void getCultureDataBaseInsert() {
         System.out.println("Testing GET METHOD (1)----------");
