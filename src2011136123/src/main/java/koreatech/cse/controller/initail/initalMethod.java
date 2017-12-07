@@ -27,35 +27,35 @@ public class initalMethod implements ServletContextListener{
         getCultureDataBaseInsert();
 
     }
-        private void getCultureDataBaseInsert() {
-            System.out.println("Testing GET METHOD (1)----------");
-            RestTemplate restTemplate = new RestTemplate();
-            try {
-                String culture= restTemplate.getForObject("http://openAPI.seoul.go.kr:8088/43794c63576a696e38334255747573/json/SearchConcertPeriodService/1/50/", String.class);
+    private void getCultureDataBaseInsert() {
+        System.out.println("Testing GET METHOD (1)----------");
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            String culture= restTemplate.getForObject("http://openAPI.seoul.go.kr:8088/43794c63576a696e38334255747573/json/SearchConcertPeriodService/1/50/", String.class);
 
-                try{
-                    JSONParser jsonParser = new JSONParser();
-                    JSONObject jsonObject1 = (JSONObject) jsonParser.parse(culture);
-                    JSONObject jsonObject2 = (JSONObject) jsonObject1.get("SearchConcertPeriodService");
-                    JSONArray array = (JSONArray) jsonObject2.get("row");
+            try{
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject1 = (JSONObject) jsonParser.parse(culture);
+                JSONObject jsonObject2 = (JSONObject) jsonObject1.get("SearchConcertPeriodService");
+                JSONArray array = (JSONArray) jsonObject2.get("row");
 
-                    for( int i = 0 ; i < array.size() ; i++ ){
+                for( int i = 0 ; i < array.size() ; i++ ){
 
-                        JSONObject entitiy = (JSONObject)array.get(i);
-                        concert.setTitle((String)entitiy.get("TITLE"))
-                                .setStartdate((String)entitiy.get("STRTDATE"))
-                                .setEnddate((String)entitiy.get("END_DATE"))
-                                .setPlace((String)entitiy.get("PLACE"));
+                    JSONObject entitiy = (JSONObject)array.get(i);
+                    concert.setTitle((String)entitiy.get("TITLE"))
+                            .setStartdate((String)entitiy.get("STRTDATE"))
+                            .setEnddate((String)entitiy.get("END_DATE"))
+                            .setPlace((String)entitiy.get("PLACE"));
 
-                        concertPeriodServiceMapper.insert(concert);
-                    }
-                }catch (ParseException e){
-                    e.printStackTrace();
+                    concertPeriodServiceMapper.insert(concert);
                 }
-            } catch (HttpClientErrorException e) {
-                System.out.println(e.getStatusCode() + ": " + e.getStatusText());
+            }catch (ParseException e){
+                e.printStackTrace();
             }
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.getStatusCode() + ": " + e.getStatusText());
         }
+    }
 
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {

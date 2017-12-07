@@ -95,6 +95,20 @@
     </div>
 </section>
 
+<section class="portfolio" id="portfolio">
+    <div class="container">
+        <h2 class="text-center text-uppercase text-secondary mb-0"> <a href="/delihouseList">서울시 맛집-호텔-랜드마크 보기</a><br/></h2>
+        <hr class="star-dark mb-5">
+    </div>
+</section>
+
+<section class="portfolio" id="portfolio">
+    <div class="container">
+        <h2 class="text-center text-uppercase text-secondary mb-0"> <a href="/weatherValue">날씨 정보</a><br/></h2>
+        <hr class="star-dark mb-5">
+    </div>
+</section>
+
 
 <!-- Footer -->
 <footer class="footer text-center">

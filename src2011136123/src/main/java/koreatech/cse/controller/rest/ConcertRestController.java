@@ -32,7 +32,7 @@ public class ConcertRestController {
     }
 
     @Transactional
-    @RequestMapping(value="/xml/concert", method=RequestMethod.GET, produces="application/xml")
+    @RequestMapping(value="/xml/concert", method= RequestMethod.GET, produces="application/xml")
     public ResponseEntity<List<Concert>> concertXml() {
         List<Concert> concertList = concertPeriodServiceMapper.concertList();
         if (concertList == null) {
@@ -55,7 +55,7 @@ public class ConcertRestController {
     }
 
     @Transactional
-    @RequestMapping(value="/xml/concert/{date}", method=RequestMethod.GET, produces="application/xml")
+    @RequestMapping(value="/xml/concert/{date}", method= RequestMethod.GET, produces="application/xml")
     public ResponseEntity<List<Concert>> concertXml(@PathVariable("date") String date) {
         List<Concert> concertList = concertPeriodServiceMapper.concertStartDateList(date);
         if (concertList == null) {

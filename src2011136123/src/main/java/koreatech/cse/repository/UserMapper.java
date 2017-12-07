@@ -30,14 +30,14 @@ public interface UserMapper {
     @SelectProvider(type = UserSqlProvider.class, method = "findAllByProvider")
     List<User> findByProvider(Searchable searchable);
 
-	//@formatter off
+    //@formatter off
     @Select("<script>"
             + "SELECT * FROM users"
             + "<if test='name != null'> WHERE NAME = #{name}</if>"
             + "<if test='name != null and email != null'> OR EMAIL = #{email}</if>"
             + "<if test='orderParam != null'>ORDER BY ${orderParam} DESC</if>"
             + "</script>")
-	//@formatter on
+    //@formatter on
     List<User> findByScript(Searchable searchable);
 
 }
