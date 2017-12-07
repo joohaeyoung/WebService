@@ -13,7 +13,6 @@ public class Concert {
 
         return instance;
     }
-
     private int id;
     private  String title;
     private String startdate;

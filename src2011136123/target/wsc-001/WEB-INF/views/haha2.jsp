@@ -25,19 +25,43 @@
     <script src="/resources/js/respond.js"></script>
 </head>
 <body>
+
+
 <div class="container"><!-- 좌우측의 공간 확보 -->
-    <!-- 헤더 들어가는 부분 -->
+    <!-- 모달창 -->
+    <div class="modal fade" id="defaultModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">알림</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-contents"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!--// 모달창 -->
+    <hr/>
+    <!-- 본문 들어가는 부분 -->
 
 
-
-
-
-    <form class="form-horizontal" role="form" method="post" action="javascript:alert( 'success!' );">
+     <form:form modelAttribute="user" class="form-horizontal" role="form">
         <div class="form-group">
             <label for="provision" class="col-lg-2 control-label">회원가입약관</label>
             <div class="col-lg-10" id="provision">
                     <textarea class="form-control" rows="8" style="resize:none">
 약관동의
+김찬명 교수님의 WebServiceConmputing 수업에 오신것을 환영합니다
+회원가입을 하시면 김찬명 교수님의 수업에 열심히 참여하여합니다.
+수업시간에 엎드려 자는 행동은 금지합니다.
+모르는 것이 있으면 질문합니다.
+본인이 웹의 달인이라면 잘난척 하지말고 동료들에게 가르쳐줍니다.
+
                     </textarea>
                 <div class="radio">
                     <label>
@@ -58,6 +82,8 @@
             <div class="col-lg-10" id="memberInfo">
                     <textarea class="form-control" rows="8" style="resize:none">
 개인정보의 항목 및 수집방법
+한국기술교육대학교 컴퓨터공학부 학생들인  이동석 주해용 송진수 박종희가 개인정보를 수집합니다.
+아마존 웹서비스의 RDS 에 회원데이터를 저장합니다.
                     </textarea>
                 <div class="radio">
                     <label>
@@ -74,15 +100,16 @@
             </div>
         </div>
         <div class="form-group" id="divId">
-            <label for="inputId" class="col-lg-2 control-label">아이디</label>
+            <label for="inputId" class="col-lg-2 control-label">아이디(email)</label>
             <div class="col-lg-10">
-                <input type="text" class="form-control onlyAlphabetAndNumber" id="id" data-rule-required="true" placeholder="30자이내의 알파벳, 언더스코어(_), 숫자만 입력 가능합니다." maxlength="30">
+                <form:input path="email" class="form-control onlyAlphabetAndNumber" id="id" data-rule-required="true" placeholder="30자이내의 알파벳, 언더스코어(_), 숫자만 입력 가능합니다." maxlength="30"/><br/>
             </div>
         </div>
         <div class="form-group" id="divPassword">
             <label for="inputPassword" class="col-lg-2 control-label">패스워드</label>
             <div class="col-lg-10">
-                <input type="password" class="form-control" id="password" name="excludeHangul" data-rule-required="true" placeholder="패스워드" maxlength="30">
+                <form:password path="password" class="form-control" id="password" name="excludeHangul" data-rule-required="true" placeholder="패스워드" maxlength="30"/><br/>
+
             </div>
         </div>
         <div class="form-group" id="divPasswordCheck">
@@ -94,7 +121,8 @@
         <div class="form-group" id="divName">
             <label for="inputName" class="col-lg-2 control-label">이름</label>
             <div class="col-lg-10">
-                <input type="text" class="form-control onlyHangul" id="name" data-rule-required="true" placeholder="한글만 입력 가능합니다." maxlength="15">
+                <form:input path="name" class="form-control onlyHangul" id="name" data-rule-required="true" placeholder="한글만 입력 가능합니다." maxlength="15"/><br/>
+
             </div>
         </div>
 
@@ -105,55 +133,20 @@
             </div>
         </div>
 
-        <div class="form-group" id="divEmail">
-            <label for="inputEmail" class="col-lg-2 control-label">이메일</label>
+
+        <div class="form-group" id="divAge">
+            <label for="inputAge" class="col-lg-2 control-label">나이</label>
             <div class="col-lg-10">
-                <input type="email" class="form-control" id="email" data-rule-required="true" placeholder="이메일" maxlength="40">
+                <form:input path="age"  class="form-control onlyNumber" id="age" data-rule-required="true" placeholder="-를 제외하고 숫자만 입력하세요." maxlength="11" /><br/>
             </div>
         </div>
-        <div class="form-group" id="divPhoneNumber">
-            <label for="inputPhoneNumber" class="col-lg-2 control-label">휴대폰 번호</label>
-            <div class="col-lg-10">
-                <input type="tel" class="form-control onlyNumber" id="phoneNumber" data-rule-required="true" placeholder="-를 제외하고 숫자만 입력하세요." maxlength="11">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="inputPhoneNumber" class="col-lg-2 control-label">성별</label>
-            <div class="col-lg-10">
-                <select class="form-control" id="gender">
-                    <option value="M">남</option>
-                    <option value="F">여</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="inputEmailReceiveYn" class="col-lg-2 control-label">이메일 수신여부</label>
-            <div class="col-lg-10">
-                <label class="radio-inline">
-                    <input type="radio" id="emailReceiveYn" name="emailReceiveYn" value="Y" checked> 동의합니다.
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" id="emailReceiveYn" name="emailReceiveYn" value="N"> 동의하지 않습니다.
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="inputPhoneNumber" class="col-lg-2 control-label">SMS 수신여부</label>
-            <div class="col-lg-10">
-                <label class="radio-inline">
-                    <input type="radio" id="smsReceiveYn" name="smsReceiveYn" value="Y" checked> 동의합니다.
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" id="smsReceiveYn" name="smsReceiveYn" value="N"> 동의하지 않습니다.
-                </label>
-            </div>
-        </div>
+
         <div class="form-group">
             <div class="col-lg-offset-2 col-lg-10">
-                <button type="submit" class="btn btn-default">Sign in</button>
+                <input type="submit" value="Signup"/>
             </div>
         </div>
-    </form>
+    </form:form>
 
     <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -256,24 +249,13 @@
                 }
             });
 
-            $('#email').keyup(function(event){
 
-                var divEmail = $('#divEmail');
 
-                if($.trim($('#email').val())==""){
-                    divEmail.removeClass("has-success");
-                    divEmail.addClass("has-error");
-                }else{
-                    divEmail.removeClass("has-error");
-                    divEmail.addClass("has-success");
-                }
-            });
+            $('#age').keyup(function(event){
 
-            $('#phoneNumber').keyup(function(event){
+                var divPhoneNumber = $('#divAge');
 
-                var divPhoneNumber = $('#divPhoneNumber');
-
-                if($.trim($('#phoneNumber').val())==""){
+                if($.trim($('#age').val())==""){
                     divPhoneNumber.removeClass("has-success");
                     divPhoneNumber.addClass("has-error");
                 }else{
@@ -294,7 +276,7 @@
                 var divName = $('#divName');
                 var divNickname = $('#divNickname');
                 var divEmail = $('#divEmail');
-                var divPhoneNumber = $('#divPhoneNumber');
+                var divAge = $('#divAge');
 
                 //회원가입약관
                 if($('#provisionYn:checked').val()=="N"){
@@ -408,32 +390,20 @@
                     divNickname.addClass("has-success");
                 }
 
-                //이메일
-                if($('#email').val()==""){
-                    modalContents.text("이메일을 입력하여 주시기 바랍니다.");
+
+
+                //나이
+                if($('#age').val()==""){
+                    modalContents.text("나이를 입력해주시기 바랍니다.");
                     modal.modal('show');
 
-                    divEmail.removeClass("has-success");
-                    divEmail.addClass("has-error");
-                    $('#email').focus();
+                    divAge.removeClass("has-success");
+                    divAge.addClass("has-error");
+                    $('#age').focus();
                     return false;
                 }else{
-                    divEmail.removeClass("has-error");
-                    divEmail.addClass("has-success");
-                }
-
-                //휴대폰 번호
-                if($('#phoneNumber').val()==""){
-                    modalContents.text("휴대폰 번호를 입력하여 주시기 바랍니다.");
-                    modal.modal('show');
-
-                    divPhoneNumber.removeClass("has-success");
-                    divPhoneNumber.addClass("has-error");
-                    $('#phoneNumber').focus();
-                    return false;
-                }else{
-                    divPhoneNumber.removeClass("has-error");
-                    divPhoneNumber.addClass("has-success");
+                    divAge.removeClass("has-error");
+                    divAge.addClass("has-success");
                 }
 
 

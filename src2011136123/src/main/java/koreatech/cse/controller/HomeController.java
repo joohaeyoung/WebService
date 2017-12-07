@@ -1,8 +1,10 @@
 package koreatech.cse.controller;
 
 import koreatech.cse.domain.Concert;
+import koreatech.cse.domain.Food;
 import koreatech.cse.repository.BookMapper;
 import koreatech.cse.repository.ConcertPeriodServiceMapper;
+import koreatech.cse.repository.PriceModelStoreServiceMapper;
 import koreatech.cse.service.Culture;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,10 +34,14 @@ public class HomeController {
     @Inject
     private ConcertPeriodServiceMapper concertPeriodServiceMapper;
 
-    Concert concert;
+    @Inject
+    private PriceModelStoreServiceMapper priceModelStoreServiceMapper;
+
+    Food food;
 
     @RequestMapping
     public String home(Model model) {
+
         return "hello";
     }
 
@@ -44,39 +50,51 @@ public class HomeController {
 
         String monthAndDay = "2017"+"-"+month+"-"+day;
 
-
         System.out.println(monthAndDay);
-        concert = Concert.getInstance();
 
-        concertPeriodServiceMapper.delete();
-        getCultureDataBaseInsert();
-        model.addAttribute("concert",concertPeriodServiceMapper.concertList2(monthAndDay));
+        model.addAttribute("concert",concertPeriodServiceMapper.concertStartDateList(monthAndDay));
         return "concertList";
     }
 
 
-    private void getCultureDataBaseInsert() {
-        System.out.println("Testing GET METHOD (1)----------");
+
+    @RequestMapping("/foodList")
+    public String foodListControll(Model model) throws IOException{
+
+        food = Food.getInstance();
+
+        getFoodDataBaseInsert();
+        model.addAttribute("food",priceModelStoreServiceMapper.foodList());
+
+        List<Food> test =priceModelStoreServiceMapper.foodList();
+
+        System.out.println( test.get(0));
+
+        return "foodList";
+    }
+
+    public void getFoodDataBaseInsert() {
+        System.out.println("Testing GET METHOD (2)----------");
         RestTemplate restTemplate = new RestTemplate();
         try {
-            String culture= restTemplate.getForObject("http://openAPI.seoul.go.kr:8088/43794c63576a696e38334255747573/json/SearchConcertPeriodService/1/200/", String.class);
-
+            String price= restTemplate.getForObject("http://openapi.seoul.go.kr:8088/65434e42436a696e3130324972455743/json/ListPriceModelStoreService/1/5/", String.class);
             try{
                 JSONParser jsonParser = new JSONParser();
-                JSONObject jsonObject1 = (JSONObject) jsonParser.parse(culture);
-                JSONObject jsonObject2 = (JSONObject) jsonObject1.get("SearchConcertPeriodService");
+                JSONObject jsonObject1 = (JSONObject) jsonParser.parse(price);
+                JSONObject jsonObject2 = (JSONObject) jsonObject1.get("ListPriceModelStoreService");
                 JSONArray array = (JSONArray) jsonObject2.get("row");
 
                 for( int i = 0 ; i < array.size() ; i++ ){
 
                     JSONObject entitiy = (JSONObject)array.get(i);
-                    concert.setTitle((String)entitiy.get("TITLE"))
-                           .setStartdate((String)entitiy.get("STRTDATE"))
-                           .setEnddate((String)entitiy.get("END_DATE"))
-                           .setPlace((String)entitiy.get("PLACE"));
+                    food.setShname((String)entitiy.get("SH_NAME"))
+                            .setShinfo((String)entitiy.get("SH_INFO"))
+                            .setShpride((String)entitiy.get("SH_PRIDE"))
+                            .setShaddr((String)entitiy.get("SH_ADDR"));
 
-                    concertPeriodServiceMapper.insert(concert);
+                    priceModelStoreServiceMapper.insert(food);
                 }
+
             }catch (ParseException e){
                 e.printStackTrace();
             }
