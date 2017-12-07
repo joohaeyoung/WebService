@@ -206,7 +206,6 @@ public class HomeController {
         }
     }
 
-
     @RequestMapping("/weatherValue")
     public String searchValueControll(Model model) throws IOException{
 
