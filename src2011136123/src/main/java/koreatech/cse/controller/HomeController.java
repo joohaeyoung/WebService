@@ -5,6 +5,7 @@ import koreatech.cse.domain.Deli;
 import koreatech.cse.domain.Food;
 import koreatech.cse.repository.BookMapper;
 import koreatech.cse.repository.ConcertPeriodServiceMapper;
+import koreatech.cse.repository.DeliciousStoreServiceMapper;
 import koreatech.cse.repository.PriceModelStoreServiceMapper;
 import koreatech.cse.service.Culture;
 import org.json.simple.parser.ParseException;
