@@ -1,8 +1,10 @@
 package koreatech.cse.controller;
 
 import koreatech.cse.domain.Concert;
+import koreatech.cse.domain.Weather;
 import koreatech.cse.repository.BookMapper;
 import koreatech.cse.repository.ConcertPeriodServiceMapper;
+import koreatech.cse.repository.WeatherMapper;
 import koreatech.cse.service.Culture;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +29,11 @@ public class HomeController {
 
     @Inject
     private ConcertPeriodServiceMapper concertPeriodServiceMapper;
+    @Inject
+    private WeatherMapper weatherMapper;
 
     Concert concert;
+    Weather fcast;
 
     @RequestMapping
     public String home(Model model) {
@@ -78,7 +83,57 @@ public class HomeController {
         }
     }
     
-    @RequestMapping("/searchValue")
+    @RequestMapping("/weatherValue")
+    public String searchValueControll(Model model) throws IOException{
+
+        fcast = new Weather();
+
+        getWeatherData();
+        model.addAttribute("fcastmodel",weatherMapper.weatherList());
+        return "weatherList";
+    }
+    
+    private void getWeatherData() {
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            String weather = restTemplate.getForObject("http://api.wunderground.com/api/1a0597f9ceaf824a/forecast/lang:KR/q/KR/Seoul.json", String.class);
+            JSONParser jsonParser = new JSONParser();
+            Object object;
+
+            try{
+                object = jsonParser.parse(weather);
+                JSONObject jsonObject = (JSONObject) object;
+
+                JSONObject forecast = (JSONObject) jsonObject.get("forecast");
+                JSONObject txt_forecast = (JSONObject) forecast.get("txt_forecast");
+                JSONArray forecastday = (JSONArray) txt_forecast.get("forecastday");
+
+                weatherMapper.flushWeather();
+
+                for( int j = 0 ; j < forecastday.size() ; j++ ){
+                    JSONObject entitiy = (JSONObject)forecastday.get(j);
+                    System.out.println("Period : "+ entitiy.get("period") +
+                            ", Title : " + entitiy.get("title") +
+                            ", Fcttext_Metric : " + entitiy.get("fcttext_metric") +
+                            ", Icon_Url : " + entitiy.get("icon_url" ));
+
+                    fcast.setId(j);
+                    fcast.setTitle((String)entitiy.get("title"));
+                    fcast.setFcttext((String)entitiy.get("fcttext_metric"));
+                    fcast.setIcon((String)entitiy.get("icon_url"));
+
+                    weatherMapper.insert(fcast);
+                }
+
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.getStatusCode() + ": " + e.getStatusText());
+        }
+    }
+
+    @RequestMapping("/foodSearchValue")
     public String showResult(Model model) throws IOException{
 
         foodd = Food.getInstance();
