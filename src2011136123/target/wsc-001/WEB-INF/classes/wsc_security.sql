@@ -70,6 +70,30 @@ LOCK TABLES `users` WRITE;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
+
+
+DROP TABLE IF EXISTS `DeliciousStoreService`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `DeliciousStoreService` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `CATE2_NAME` varchar(200) character set utf8,
+  `NAME_KOR` varchar(200) character set utf8,
+  `H_KOR_GU` varchar(200) character set utf8,
+  `H_KOR_DONG` varchar(200) character set utf8,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `DeliciousStoreService`
+--
+
+LOCK TABLES `DeliciousStoreService` WRITE;
+/*!40000 ALTER TABLE `DeliciousStoreService` DISABLE KEYS */;
+/*!40000 ALTER TABLE `DeliciousStoreService` ENABLE KEYS */;
+UNLOCK TABLES;
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
