@@ -1,6 +1,7 @@
 package koreatech.cse.controller;
 
 import koreatech.cse.domain.Concert;
+import koreatech.cse.domain.Deli;
 import koreatech.cse.domain.Food;
 import koreatech.cse.repository.BookMapper;
 import koreatech.cse.repository.ConcertPeriodServiceMapper;
@@ -37,7 +38,11 @@ public class HomeController {
     @Inject
     private PriceModelStoreServiceMapper priceModelStoreServiceMapper;
 
+    @Inject
+    private DeliciousStoreServiceMapper deliciousStoreServiceMapper;
+
     Food food;
+    Deli deli;
 
     @RequestMapping
     public String home(Model model) {
@@ -93,6 +98,51 @@ public class HomeController {
                             .setShaddr((String)entitiy.get("SH_ADDR"));
 
                     priceModelStoreServiceMapper.insert(food);
+                }
+
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.getStatusCode() + ": " + e.getStatusText());
+        }
+    }
+
+    @RequestMapping("/delihouseList")
+    public String deliListControll(Model model) throws IOException{
+
+        deli = Deli.getInstance();
+
+        getDeliDataBaseInsert();
+        model.addAttribute("deli",deliciousStoreServiceMapper.deliList());
+
+        List<Deli> test =deliciousStoreServiceMapper.deliList();
+
+        System.out.println( test.get(0));
+
+        return "delihouseList";
+    }
+
+    public void getDeliDataBaseInsert() {
+        System.out.println("Testing GET METHOD (3)-------from SONG---");
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            String price= restTemplate.getForObject("http://openapi.seoul.go.kr:8088/73736d66676a696e3935476d626861/json/SebcVisitKor/1/200/", String.class);
+            try{
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject1 = (JSONObject) jsonParser.parse(price);
+                JSONObject jsonObject2 = (JSONObject) jsonObject1.get("SebcVisitKor");
+                JSONArray array = (JSONArray) jsonObject2.get("row");
+
+                for( int i = 0 ; i < array.size() ; i++ ){
+
+                    JSONObject entitiy = (JSONObject)array.get(i);
+                    deli.setCate2name((String)entitiy.get("CATE2_NAME"))
+                            .setNamekor((String)entitiy.get("NAME_KOR"))
+                            .setHkorgu((String)entitiy.get("H_KOR_GU"))
+                            .setHkordong((String)entitiy.get("H_KOR_DONG"));
+
+                    deliciousStoreServiceMapper.insert(deli);
                 }
 
             }catch (ParseException e){
