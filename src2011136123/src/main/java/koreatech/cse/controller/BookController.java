@@ -21,7 +21,17 @@ import java.util.List;
 @RequestMapping("/book")
 public class BookController {
 
-    
+    @Inject
+    private AuthorityMapper authorityMapper;
+
+    @Inject
+    private BookMapper bookMapper;
+
+    @Inject
+    private UserMapper userMapper;
+
+    @Inject
+    private UserService userService;
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping("/register")
