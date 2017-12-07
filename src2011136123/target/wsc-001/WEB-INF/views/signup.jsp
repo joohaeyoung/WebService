@@ -185,12 +185,7 @@
               }
           });
 
-          $(".onlyHangul").keyup(function(event){
-              if (!(event.keyCode >=37 && event.keyCode<=40)) {
-                  var inputVal = $(this).val();
-                  $(this).val(inputVal.replace(/[a-z0-9]/gi,''));
-              }
-          });
+
 
           $(".onlyNumber").keyup(function(event){
               if (!(event.keyCode >=37 && event.keyCode<=40)) {

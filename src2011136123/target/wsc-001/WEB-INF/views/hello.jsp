@@ -32,7 +32,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
     <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="/">DKE 여행</a>
+        <a class="navbar-brand js-scroll-trigger" href="/">DKE 서울 여행</a>
         <c:choose>
             <c:when test="${user==null}">
                 <form action="j_spring_security_check" method="post" >
@@ -55,14 +55,9 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item mx-0 mx-lg-1">
-                    <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Portfolio</a>
+                    <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">떠나자~</a>
                 </li>
-                <li class="nav-item mx-0 mx-lg-1">
-                    <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">About</a>
-                </li>
-                <li class="nav-item mx-0 mx-lg-1">
-                    <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Contact</a>
-                </li>
+
             </ul>
         </div>
     </div>
@@ -79,8 +74,8 @@
         <h2 class="text-uppercase mb-0">여행을 떠나 보아요</h2><br/><br/>
 
         <form action="/searchValue" method="post">
-            <input type="text" placeholder="month" name="month"/>월
-            <input type="text" placeholder="day" name="day"/>일
+            <input type="text" placeholder="00" name="month"/>월
+            <input type="text" placeholder="00" name="day"/>일
             <input type="submit" value="검색"/>
         </form>
 

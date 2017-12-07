@@ -4,6 +4,8 @@ koreatech\cse\repository\provider\UserSqlProvider.class
 koreatech\cse\domain\Authority.class
 koreatech\cse\controller\HomeController.class
 koreatech\cse\domain\Food.class
+koreatech\cse\domain\Deli.class
+koreatech\cse\controller\rest\FoodRestController.class
 koreatech\cse\domain\Book.class
 koreatech\cse\repository\provider\UserSqlProvider$1.class
 koreatech\cse\repository\BookMapper.class
@@ -11,10 +13,14 @@ koreatech\cse\controller\BookController.class
 koreatech\cse\controller\rest\ConcertRestController.class
 koreatech\cse\controller\UserController.class
 koreatech\cse\domain\Concert.class
+koreatech\cse\controller\initail\initalMethod.class
 koreatech\cse\repository\ConcertPeriodServiceMapper.class
+koreatech\cse\repository\DeliciousStoreServiceMapper.class
 koreatech\cse\aop\AopTester.class
 koreatech\cse\service\Culture.class
 koreatech\cse\domain\User.class
 koreatech\cse\repository\UserMapper.class
 koreatech\cse\service\UserService.class
 koreatech\cse\repository\PriceModelStoreServiceMapper.class
+koreatech\cse\repository\WeatherMapper.class
+koreatech\cse\domain\Weather.class
