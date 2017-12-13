@@ -38,7 +38,6 @@ public class UserController {
         return "redirect:/";
     }
 
-
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Model model, @RequestParam(required=false) String name, @RequestParam(required=false) String email, @RequestParam(required=false) String order) {
         Searchable searchable = new Searchable();
@@ -49,8 +48,7 @@ public class UserController {
         model.addAttribute("users", userMapper.findByScript(searchable));
         return "list";
     }
-
-
+    
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(@RequestParam int id, Model model) {
         model.addAttribute("user", userMapper.findOne(id));

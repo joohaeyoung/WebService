@@ -55,7 +55,6 @@ public interface ConcertPeriodServiceMapper {
     @Insert("INSERT INTO ConcertPeriodService (TITLE, START_DATE, END_DATE, PLACE) VALUES (#{title}, #{startdate}, #{enddate}, #{place})")
     void insert(Concert concert);
 
-
     @Update("UPDATE SET ConcertPeriodService TITLE = {#title}, START_DATE = {#startdate}, END_DATE = {#enddate}, PLACE = {#place} WHERE ID = {#id}")
     void update(Concert concert);
 

@@ -117,19 +117,20 @@ public class HomeController {
     }
 
     @RequestMapping("/foodList")
-    public String foodListControll(Model model) throws IOException{
+    public String foodListControll(Model model) throws IOException {
 
         food = Food.getInstance();
 
         getFoodDataBaseInsert();
-        model.addAttribute("food",priceModelStoreServiceMapper.foodList());
+        model.addAttribute("food", priceModelStoreServiceMapper.foodList());
 
-        List<Food> test =priceModelStoreServiceMapper.foodList();
+        List<Food> test = priceModelStoreServiceMapper.foodList();
 
-        System.out.println( test.get(0));
+        System.out.println(test.get(0));
 
         return "foodList";
     }
+
 
     public void getFoodDataBaseInsert() {
         System.out.println("Testing GET METHOD (2)--------from SONG--");
@@ -143,16 +144,13 @@ public class HomeController {
                 JSONArray array = (JSONArray) jsonObject2.get("row");
 
                 for( int i = 0 ; i < array.size() ; i++ ){
-
                     JSONObject entitiy = (JSONObject)array.get(i);
                     food.setShname((String)entitiy.get("SH_NAME"))
                             .setShinfo((String)entitiy.get("SH_INFO"))
                             .setShpride((String)entitiy.get("SH_PRIDE"))
                             .setShaddr((String)entitiy.get("SH_ADDR"));
-
                     priceModelStoreServiceMapper.insert(food);
                 }
-
             }catch (ParseException e){
                 e.printStackTrace();
             }
@@ -206,7 +204,6 @@ public class HomeController {
         }
     }
 
-
     @RequestMapping("/weatherValue")
     public String searchValueControll(Model model) throws IOException{
 
@@ -257,11 +254,6 @@ public class HomeController {
             System.out.println(e.getStatusCode() + ": " + e.getStatusText());
         }
     }
-
-
-
-
-
 
     @RequestMapping("/requestParamTest")
     public String requestParamTest(@RequestParam(name = "a", required=false, defaultValue = "0") int a,

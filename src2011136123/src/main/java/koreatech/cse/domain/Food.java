@@ -11,7 +11,6 @@ public class Food {
 
         return instance;
     }
-
     private int id;
     private  String shname;
     private String shinfo;
